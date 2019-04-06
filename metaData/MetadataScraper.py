@@ -34,9 +34,6 @@ with open('C:\\users\\nschapka\\desktop\\mediainfoOut.txt', "r", encoding="utf-8
     for line in f:
         lines.append(line)
 
-for chunk in getChunks(lines):
-    print(chunk)
-
 
 thisDict = {title(chunk): {keys(line): vals(line) for line in chunk[1:len(chunk)+1]} for chunk in getChunks(lines)}
 
