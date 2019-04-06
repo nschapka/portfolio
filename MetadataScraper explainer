@@ -1,0 +1,5 @@
+MetadataScraper.py
+
+A friend who works as a digital archivist was working on a python sccript to automate pulling metadata from video into a nested dict for easy access.  I thought it would be a nice intro project for learning python myself, so I asked if I could lend a hand.
+
+The format for the input is reliable, and an example is given in mediadataOut.txt
