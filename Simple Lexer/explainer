@@ -1,1 +1,7 @@
+This class was part of a larger pet project to parse a robot program and translate it to any other industrial robot language.
 
+The class takes in a program file (in this case ABB's RAPID language), and breaks everything down into contextless syntactical tokens using regex.
+
+The types of tokens, Identifiers, keywords, numbers, literals, and punctuation, are more or less universal across languages, such that retooling this to parse another robot language (eg, Kuka's KRL or Fanuc Karel) would be as simple as writing a new enum of reserved keywords and tweaking the regex patterns for each type of token to match the slight difference in syntax.
+
+Each line of input code is run through a successive regex search, in which the line is tested against each pattern, and whichever finds the largest and leftmost token is accepted as the next matched token.  The matched substring is cut out from the input line and packaged up according to the type of token to be added to a list of ordered tokens to be used later.  The substring is cut out in order to 'consume' the line as it goes, only moving on to the next line when no more matches can be found.
