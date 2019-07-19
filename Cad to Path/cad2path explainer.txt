@@ -1,0 +1,26 @@
+One of the first projects I was assigned to in my current job involved guiding a robot tool aorund certain features of a part to process material edges with only a CAD file as an input.
+The project itself was largely under NDA, so I can't be specific about exactly what type of material, or exactly what sort of processing was taking place, but that's not really the interesting part.
+This was originally developed as a massive excel macro before I knew any better, and before I had wrapped my head around the finer points of OOP and more proper programming practices, but I liked the solution, so I rebuilt it in java as a sort of self-test excercise.
+
+The program takes a 2D cad file in .DXF format as an input and returns a file that runs on either a Kuka or ABB robot, depending on command line arguments. The program is packaged as a CLI tool, such that it can be used as part of a shell script in order to process a large number of CAD files as easily as possible.
+The output makes a couple of presuppositions on the robot cell, namely that the robot has already been commissioned, home positions taught, tools calibrated with the expected coordinate system, and a method for the automation to locate the part in space to update the robot's base frame to the origin of the cad file.
+
+The expected input takes one of two forms:
+- A part consisting of a convex polygonal outline containing not more than one noncircular (ie, built from arcs and lines in CAD) void, and any number of circular voids, eg a square inscribed with an oval
+- The above, but cut in half prior to processing, such that the noncircular void intersects with the outline, eg. a block letter 'U'
+
+The target for processing in both cases is the noncircular void in the part, with the robot tool running normal to the tangent of the target void.
+The program algorithmically makes the distinction between the above input cases, so the CLI arguments only require a filename and an output type.
+
+The method for making the distinction between the outline and the target feature in the latter case takes the following steps:
+- The entities pulled in from CAD are boiled down to a point cloud
+- The point cloud is used to find a largest n-point (set to four at the moment) polygon that can be described with that set of points
+- A ray casting algorithm is run to determine which points are inside the boundary polygon.  Points that make up the boundary polygon are not considered.
+- Points that are found to be inside the bounding polygon are then collated back to CAD entities (arcs, lines).  These are determined to be the entities which make up the "local concavity", which is the processing target feature.
+- Those entities are then ordered and aligned, then used to generate the robot program.
+
+
+possible improvements/weaknesses:
+- Currently the program is set up to allow inputs with only one target for processing.  With some additional work, it could be set up to accept n number of processing targets in both the whole part and cut part cases.
+- The ray casting algorithm enforces a convex part outline, such that the target feature is the only concavity in the drawing.  This would likely entail significantly more work to tell the difference between an outline concavity and a target concavity.
+- The bounding polygon determination can use a lot of processor time.  This could be improved using some statistical analysis to remove points from consideration before testing for a largest polygon, ie finding a mean and sigma for point displacement from the average point position, those closer than E[x] - sigma*(some fine-tuned ratio) can safely be removed from consideration, as it's very unlikely that points close to the center of the part would be part of a largest bounding polygon.
