@@ -47,6 +47,7 @@ public class PathSetup {
 		List<DrawingEntity> orderedPath = new ArrayList<DrawingEntity>();
 		Point anchorPoint = anchor;
 		
+		// starting from the anchor point on one end of the path, create a list of Entities in order along the path
 		while (orderedPath.size() < ents.size()) {
 			for (DrawingEntity de : ents) {
 				if (!orderedPath.contains(de) && de.point1.equals(anchorPoint) || de.point2.equals(anchorPoint)) {
@@ -74,7 +75,7 @@ public class PathSetup {
 				path.get(i).point1 = path.get(i).point2;
 				path.get(i).point2 = tempPoint;
 				path.get(i).UpdateCoords();
-				if (path.get(i) instanceof Arc) {
+				if (path.get(i) instanceof Arc) { // have to make sure the start and end angles get flipped along with the XY points
 					((Arc) path.get(i)).flipAngles(); 
 				}
 			}
