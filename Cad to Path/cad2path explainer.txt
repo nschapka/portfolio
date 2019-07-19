@@ -2,7 +2,7 @@ One of the first projects I was assigned to in my current job involved guiding a
 The project itself was largely under NDA, so I can't be specific about exactly what type of material, or exactly what sort of processing was taking place, but that's not really the interesting part.
 This was originally developed as a massive excel macro before I knew any better, and before I had wrapped my head around the finer points of OOP and more proper programming practices, but I liked the solution, so I rebuilt it in java as a sort of self-test excercise.
 
-The program takes a 2D cad file in .DXF format as an input and returns a file that runs on either a Kuka or ABB robot, depending on command line arguments. The program is packaged as a CLI tool, such that it can be used as part of a shell script in order to process a large number of CAD files as easily as possible.
+The program takes a 2D cad file in .DXF format as an input and creates a file in the current working directory that runs on either a Kuka or ABB robot, depending on command line arguments. The program is packaged as a CLI tool, such that it can be used as part of a shell script in order to process a large number of CAD files as easily as possible.  Expected arguments are a filename (*.dxf) and an output type (ABB || kuka), in any order.
 The output makes a couple of presuppositions on the robot cell, namely that the robot has already been commissioned, home positions taught, tools calibrated with the expected coordinate system, and a method for the automation to locate the part in space to update the robot's base frame to the origin of the cad file.
 
 The expected input takes one of two forms:
